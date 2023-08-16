@@ -1,6 +1,7 @@
 package com.hungpn.learn.springboot.controller;
 
 import com.hungpn.learn.springboot.entity.User;
+import com.hungpn.learn.springboot.repository.PostRepository;
 import com.hungpn.learn.springboot.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -14,6 +15,9 @@ import java.util.Optional;
 public class UserController {
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private PostRepository postRepository;
 
     @GetMapping("/users")
     public List<User> getAllUsers() {
@@ -30,7 +34,7 @@ public class UserController {
         return userRepository.save(user);
     }
 
-    @PutMapping("/user/{userId}")
+    @PutMapping("/users/{userId}")
     public ResponseEntity<User> updateUserById (@PathVariable Long userId,@RequestBody User updateUserById){
         Optional<User> optinalUser=userRepository.findById(userId);
         if(optinalUser.isPresent()){
@@ -47,8 +51,6 @@ public class UserController {
         else {
             return ResponseEntity.notFound().build();
         }
-      //  throw new ResourceNotFoundException("User not found with id " + userId);
-
     }
 //
 //
@@ -66,4 +68,10 @@ public class UserController {
            return ResponseEntity.notFound().build();
        }
    }
+//   @GetMapping("/users/{userId}/posts")
+//    public Optional<User> {
+//        if()
+//            return postRepository.findAll();
+//    }
+
 }
