@@ -2,6 +2,7 @@ package com.hungpn.learn.springboot.controller;
 
 import com.hungpn.learn.springboot.entity.Post;
 import com.hungpn.learn.springboot.entity.User;
+import com.hungpn.learn.springboot.exception.NotFoundException;
 import com.hungpn.learn.springboot.repository.PostRepository;
 import com.hungpn.learn.springboot.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +22,13 @@ public class PostController {
 
     @GetMapping("/posts/{postId}")
     public Optional<Post> getPostById(@PathVariable Long postId) {
-        return postRepository.findById(postId);
+        Optional<Post> optionalPost= postRepository.findById((postId));
+        if (optionalPost.isPresent()) {
+            return postRepository.findById(postId);
+        }
+        else{
+            throw new NotFoundException(" User with id "+postId +"notFound in DB !! Please check again .");
+        }
     }
 
     @PostMapping("/posts")
@@ -35,7 +42,7 @@ public class PostController {
             return ResponseEntity.ok(savedPost);
         }
         else {
-            return ResponseEntity.notFound().build();
+            throw new NotFoundException("User with id : "+ userId+"not Found in DB !!! ,please check again ");
         }
     }
 
@@ -52,7 +59,7 @@ public class PostController {
            postRepository.save(post);
            return ResponseEntity.ok(post);
        } else {
-           return ResponseEntity.notFound().build();
+           throw new NotFoundException("Post with id : "+postId+"not found !!! , Please check again");
        }
     }
 
@@ -66,7 +73,9 @@ public class PostController {
 
             return ResponseEntity.noContent().build();
         } else {
-            return ResponseEntity.notFound().build();
+            throw new NotFoundException("Post with id :"+postId+" not found in DB !!! , Please check again ");
         }
+
     }
+
 }

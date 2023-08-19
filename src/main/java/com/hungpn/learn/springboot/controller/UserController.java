@@ -1,6 +1,7 @@
 package com.hungpn.learn.springboot.controller;
 
 import com.hungpn.learn.springboot.entity.User;
+import com.hungpn.learn.springboot.exception.NotFoundException;
 import com.hungpn.learn.springboot.repository.PostRepository;
 import com.hungpn.learn.springboot.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,12 +50,10 @@ public class UserController {
             return ResponseEntity.ok(user);
         }
         else {
-            return ResponseEntity.notFound().build();
+            throw new NotFoundException("User with id "+ userId+"not found in DB , please check again ");
         }
     }
 //
-//
-//    }
 //
    @DeleteMapping("/users/{userId}")
    public ResponseEntity<User> deleteUserById (@PathVariable Long userId,@RequestBody User deleteUserById) {
@@ -65,7 +64,7 @@ public class UserController {
 
            return ResponseEntity.noContent().build();
        } else {
-           return ResponseEntity.notFound().build();
+           throw new NotFoundException("User with id "+ userId+"not found in DB , please check again ");
        }
    }
 //   @GetMapping("/users/{userId}/posts")
